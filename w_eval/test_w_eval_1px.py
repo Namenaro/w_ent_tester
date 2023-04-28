@@ -14,11 +14,18 @@ def test_went_around_T__1(pic):
 
     print("сделать один клик: выберется T, а яркость в ней обозначаем vet")
     T = get_point_from_user(pic)
-    
+
     # рисуем сам клик:
     fig, ax = plt.subplots()
     pic.draw_to_ax(ax)
     pic.draw_point(ax, T, str_for_point=None, color='green')
+    logger.add_fig(fig)
+
+    #рисуем гистограмму v
+    fig, ax = plt.subplots()
+    v_sample = pic.distr.get_sample(sample_size=None)
+    ax.set_title('v_distr')
+    ax.hist(v_sample)
     logger.add_fig(fig)
 
     # рисуем гистограмму w

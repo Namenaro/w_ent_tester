@@ -6,13 +6,13 @@ class WEval1px:
         self.pic = pic
 
     def get_w(self, vet, vreal):
-        return self.pic.distr.get_p_of_event(vet, vreal)
+        return 1 - self.pic.distr.get_p_of_event(vet, vreal)
 
     def get_w_distr(self, vet):
         w_sample = []
         v_sample = self.pic.distr.get_sample(sample_size=None)
         for vreal in v_sample:
-            w_sample.append(self.get_w(vreal, vet))
+            w_sample.append(self.get_w(vreal=vreal, vet=vet))
         return Distr(max=1, min=0, sample=w_sample)
 
     def get_vicinity_size(self, rad):
@@ -25,7 +25,7 @@ class WEval1px:
         return 1 - p
 
     def get_went_by_v(self, vreal, vet, err_radius, w_distr=None):
-        w_real = self.get_w(vet, vreal)
+        w_real = self.get_w(vet=vet, vreal=vreal)
         if w_distr is None:
             w_distr = self.get_w_distr(vet)
         return self.get_went_by_w(w_distr=w_distr, w_real=w_real, err_radius=err_radius)

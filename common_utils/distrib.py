@@ -14,6 +14,12 @@ class Distr:
 
         self.sample = sample
 
+    def get_p_of_val(self, val):
+        if self.uniform:
+            return 1/self.max
+        num_of_target_elements = list(self.sample).count(val)
+        return num_of_target_elements/len(self.sample)
+
     def get_p_of_event(self, val_1, val_2):
 
         if val_1 < val_2:
@@ -25,7 +31,7 @@ class Distr:
             right = val_1
 
         elif val_1 == val_2:
-            return 0
+            return self.get_p_of_val(val_1)
 
         if self.uniform:
             return (right - left) / (self.max - self.min)
