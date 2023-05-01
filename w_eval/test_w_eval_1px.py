@@ -8,12 +8,15 @@ import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
 
-def test_went_around_T__1(pic, max_went):
-    logger = HtmlLogger("t1")
-    eval1px = WEval1px(pic)
 
+def test_went_around_T__1(pic, max_went):
     print("сделать один клик: выберется T, а яркость в ней обозначаем vet")
     T = get_point_from_user(pic)
+    return test_went_around_T__1_(pic, max_went, T)
+
+def test_went_around_T__1_(pic, max_went, T):
+    logger = HtmlLogger("t1")
+    eval1px = WEval1px(pic)
 
     # рисуем сам клик:
     fig, ax = plt.subplots()
@@ -33,7 +36,7 @@ def test_went_around_T__1(pic, max_went):
     w_distr = eval1px.get_w_distr(vet)
     fig, ax = plt.subplots()
     ax.set_title('w_distr')
-    ax.hist(w_distr.sample)
+    ax.hist(w_distr.sample, range=[0, max_went])
     logger.add_fig(fig)
 
 

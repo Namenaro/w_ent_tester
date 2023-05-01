@@ -10,19 +10,23 @@ import matplotlib as mpl
 import numpy as np
 
 
-def test_went_around_T__cloud(pic, max_went):
+def test_went_around_T__cloud(pic):
+    print("Выбрать точку на картинке и радиус окна вокруг нее. Яркость в окне обозначим за vet")
     logger = HtmlLogger("tn")
+    T, radius = get_point_and_radius_from_user(pic)
+    max_went = radius**2
+    test_went_around_T__cloud_(pic, radius, T, max_went, logger)
+
+
+def test_went_around_T__cloud_(pic, radius, T, max_went, logger):
     eval1px = WEval1px(pic)
 
-    print("Выбрать точку на картинке и радиус окна вокруг нее. Яркость в окне обозначим за vet")
-
-    T, radius = get_point_and_radius_from_user(pic)
-    print(T)
     all_cloud_points = pic.get_point_cloud(center_point=T, radius=radius)
     vet = pic.get_mean_val_in_point_cloud(all_cloud_points)
     print ("vet = " + str(vet))
     cloud_size = len(all_cloud_points)
 
+    w_distr_1px = eval1px.get_w_distr(vet)
     # рисуем сам клик:
     fig, ax = plt.subplots()
     pic.draw_to_ax(ax)
@@ -32,11 +36,11 @@ def test_went_around_T__cloud(pic, max_went):
     eval_cloud = WEvalCloud(pic, evaluator_1px=eval1px)
 
     # рисуем гистограмму w
-    vet = pic.get_val_in_point(T)
+    vet = pic.get_mean_val_in_point_cloud(all_cloud_points)
     w_distr = eval_cloud.get_w_distr(vet, cloud_size=cloud_size)
     fig, ax = plt.subplots()
     ax.set_title('w_distr for cloud w')
-    ax.hist(w_distr.sample)
+    ax.hist(w_distr.sample, range=[0, max_went])
     logger.add_fig(fig)
 
 
@@ -48,7 +52,7 @@ def test_went_around_T__cloud(pic, max_went):
         for y in range(Y):
             t = Point(x, y)
             w_ent = eval_cloud.get_went(cloud_center_point=t, all_cloud_points=all_cloud_points,
-                                T=T, vet=vet, points_to_exclude=[], w_distr=w_distr)
+                                        T=T, vet=vet, points_to_exclude=[], w_distr_1px=w_distr_1px)
             new_pic.set_point_val(t, w_ent)
 
     fig, ax = plt.subplots()
@@ -62,4 +66,7 @@ def test_went_around_T__cloud(pic, max_went):
 
 if __name__ == '__main__':
     pic = Pic()
-    test_went_around_T__cloud(pic, 9)
+    test_went_around_T__cloud(pic)
+    radius = 3
+
+    #test_went_around_T__cloud_(pic, radius=radius, T=Point(x=14, y=14), max_went=radius**2)

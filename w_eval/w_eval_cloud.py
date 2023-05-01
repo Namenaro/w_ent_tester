@@ -23,14 +23,15 @@ class WEvalCloud:
     #ОСНОВНОЙ МЕТОД---------------------------------------------------------
     # went для центра облака считаем относительно T, а went-ы
     # остальных точек облака cчитаем относительно центра. Все went-ы складываем
-    def get_went(self, cloud_center_point, all_cloud_points, T, vet, points_to_exclude, w_distr=None):
+    def get_went(self, cloud_center_point, all_cloud_points, T, vet, points_to_exclude, w_distr_1px=None):
         went = 0
+
         if cloud_center_point not in points_to_exclude:
             err_radius_for_center = T.dist_to(cloud_center_point)
             v_in_center = self.pic.get_val_in_point(cloud_center_point)
             went_for_center = self.evaluator_1_px.get_went_by_v(vreal=v_in_center, vet=vet,
                                                                 err_radius=err_radius_for_center,
-                                                                w_distr=w_distr)
+                                                                w_distr=w_distr_1px)
             went += went_for_center
 
         for point in all_cloud_points:
@@ -41,11 +42,10 @@ class WEvalCloud:
             err_radius_for_point = cloud_center_point.dist_to(point)
             v_in_point = self.pic.get_val_in_point(point)
             went_for_point = self.evaluator_1_px.get_went_by_v(vreal=v_in_point, vet=vet,
-                                                            err_radius=err_radius_for_point,
-                                                            w_distr=w_distr)
+                                                               err_radius=err_radius_for_point,
+                                                               w_distr=w_distr_1px)
             went += went_for_point
-            if went_for_point > 0:
-                print ("v = " + str(v_in_point) + ", w=" + str(self.evaluator_1_px.get_w(vet, vreal=v_in_point)))
+
 
         return went
 
