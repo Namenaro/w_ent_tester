@@ -8,7 +8,7 @@ import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
 
-def test_went_around_T__1(pic):
+def test_went_around_T__1(pic, max_went):
     logger = HtmlLogger("t1")
     eval1px = WEval1px(pic)
 
@@ -52,7 +52,7 @@ def test_went_around_T__1(pic):
     fig, ax = plt.subplots()
     ax.set_title('T=' + str(T) + ", vet=" + str(vet))
     cmap = cm.coolwarm
-    norm = mpl.colors.Normalize(vmin=0, vmax=1)  # norm = mpl.colors.TwoSlopeNorm(vmin=0,vcenter=0.5, vmax=1)
+    norm = mpl.colors.Normalize(vmin=0, vmax=max_went)  # norm = mpl.colors.TwoSlopeNorm(vmin=0,vcenter=0.5, vmax=1)
     im = ax.imshow(new_pic.img, norm=norm, cmap=cmap)
     plt.colorbar(im)
     logger.add_fig(fig)

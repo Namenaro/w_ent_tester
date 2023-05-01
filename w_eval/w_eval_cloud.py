@@ -44,6 +44,9 @@ class WEvalCloud:
                                                             err_radius=err_radius_for_point,
                                                             w_distr=w_distr)
             went += went_for_point
+            if went_for_point > 0:
+                print ("v = " + str(v_in_point) + ", w=" + str(self.evaluator_1_px.get_w(vet, vreal=v_in_point)))
+
         return went
 
 
