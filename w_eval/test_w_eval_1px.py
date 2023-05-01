@@ -57,6 +57,7 @@ def test_went_around_T__1(pic):
     plt.colorbar(im)
     logger.add_fig(fig)
 
+
 if __name__ == '__main__':
     pic = Pic()
     test_went_around_T__1(pic)
