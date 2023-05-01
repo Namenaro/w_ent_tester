@@ -60,4 +60,4 @@ def test_went_around_T__1(pic, max_went):
 
 if __name__ == '__main__':
     pic = Pic()
-    test_went_around_T__1(pic)
+    test_went_around_T__1(pic, 1)
