@@ -4,18 +4,19 @@ from prog import Program, Event
 
 
 def draw_program_to_ax(ax, pic, program):
+    pic.draw_to_ax(ax)
     for i in range(len(program.order)):
         event_id = program.order[i]
         draw_event(event_id, pic, ax, program)
         if i == 0:
             continue
-        draw_arrow_to_event(event_id, program, ax)
+        draw_arrow_to_event(event_id, program, pic, ax)
 
 
 def draw_event(event_id, pic, ax, program):
     event = program.get_event(event_id)
     pic.draw_rectangle(ax=ax, radius=event.cloud_rad, point=event.point)
-    pic.draw_point(point=event.point, str_for_point=str(event_id))
+    pic.draw_point(ax=ax, point=event.point, str_for_point=str(event_id))
 
 
 def draw_arrow_to_event(event_id, program, pic, ax):

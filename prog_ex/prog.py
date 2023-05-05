@@ -1,3 +1,5 @@
+from common_utils import Point, IdsGenerator
+
 class Event:
     def __init__(self, point, cloud_rad, vet, err_rad):
         self.point = point
@@ -11,11 +13,17 @@ class Program:
         self.order = [] # [id_1, ..., id_n]
         self.child_to_parent = {}  # {child_id: parent_id}
 
+        self.ids_gen = IdsGenerator()
+
     def is_empty(self):
         return len(self.order) == 0
 
     def add_event(self, event, parent_id):
-        pass
+        event_id = self.ids_gen.generate_id()
+        self.order.append(event_id)
+        self.events[event_id] = event
+        if parent_id is not None:
+            self.child_to_parent[event_id] = parent_id
 
     def get_event(self, event_id):
         return self.events[event_id]
@@ -30,14 +38,8 @@ class Program:
 
 class Exemplar:
     def __init__(self):
-        self.events_to_points = {} # {id: point}
+        self.events_to_points = {}  # {id: point}
 
 
 
-# загрузить программу из файла через easygui
-def load_program():
-    return program
-
-def load_program_by_name(file_name):
-    return program
 

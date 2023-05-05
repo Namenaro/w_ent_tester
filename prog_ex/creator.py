@@ -30,8 +30,11 @@ class Creator:
         point = Point(x=x, y=y)
         cloud_radius = int(input("Радиус облака: "))
         err_radius = int(input("Радиус адаптации:"))
+
+        parent_id = None
         if not self.program.is_empty():
             parent_id = int(input("Номер родителя: "))
+
         vet = self.pic.get_mean_val_around_point(point, cloud_radius)
         event = Event(point=point, cloud_rad=cloud_radius, err_rad=err_radius, vet=vet)
         self.program.add_event(event=event, parent_id=parent_id)
