@@ -3,16 +3,29 @@ from drawer import draw_program_to_ax
 from picture_wrapper import Pic
 from common_utils import Point
 
-
+import jsonpickle
 import matplotlib.pyplot as plt
 import math
 import numpy as np
 
+def create_program(pic):
+    creator = Creator(pic)
+    program = creator.run()
+    return program
+
+def create_and_save_program(pic, filename='default_pro'):
+    program = create_program(pic)
+    with open(filename, "w") as write_file:
+        write_file.write(jsonpickle.encode(program))
+
+def load_program_from_file(filename='default_pro'):
+    with open(filename, "r") as read_file:
+        return jsonpickle.decode(read_file.read())
 
 # правая кропка закрыть
 class Creator:
-    def __init__(self):
-        self.pic = Pic()
+    def __init__(self, pic):
+        self.pic = pic
         self.program = Program()
 
         self.fig, self.ax = plt.subplots()
@@ -33,7 +46,7 @@ class Creator:
 
         parent_id = None
         if not self.program.is_empty():
-            parent_id = int(input("Номер родителя: "))
+            parent_id = str(input("Номер родителя: "))
 
         vet = self.pic.get_mean_val_around_point(point, cloud_radius)
         event = Event(point=point, cloud_rad=cloud_radius, err_rad=err_radius, vet=vet)
@@ -54,5 +67,11 @@ class Creator:
 # накликать программу вручную
 # сохранить в файл, если задано его имя
 if __name__ == '__main__':
-    creator = Creator()
-    program = creator.run()
+    pic = Pic()
+    create_and_save_program(pic)
+
+    print("Отрисуем сохраненнную ранее программу:")
+    program = load_program_from_file()
+    fig, ax = plt.subplots()
+    draw_program_to_ax(ax, program=program, pic=pic)
+    plt.show()

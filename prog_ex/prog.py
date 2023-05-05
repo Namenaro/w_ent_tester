@@ -19,7 +19,7 @@ class Program:
         return len(self.order) == 0
 
     def add_event(self, event, parent_id):
-        event_id = self.ids_gen.generate_id()
+        event_id = str(self.ids_gen.generate_id())
         self.order.append(event_id)
         self.events[event_id] = event
         if parent_id is not None:
