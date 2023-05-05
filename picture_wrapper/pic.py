@@ -98,6 +98,11 @@ class Pic:
             mass += self.get_val_in_point(point)
         return mass/len(point_cloud)
 
+    def get_mean_val_around_point(self, point, radius):
+        point_cloud = self.get_point_cloud(point, radius)
+        mean = self.get_mean_val_in_point_cloud(point_cloud)
+        return mean
+
     def get_vals_of_point_cloud(self, point_cloud):
         vals_cloud = []
         for point in point_cloud:
@@ -114,6 +119,10 @@ class Pic:
         data_from_pic = ClickedData()
         data_from_pic.set_data(points=points, radiuses=radiuses)
         return data_from_pic
+
+    def select_in_hand_mode_with_radiuses_unpacked(self):
+        data_from_pic =self.select_in_hand_mode_with_radiuses()
+        return data_from_pic.points, data_from_pic.radiuses
 
     def select_in_hand_mode_without_radiuses(self):
         devcr = CoordSelector(self.img, need_radiuses=False)
