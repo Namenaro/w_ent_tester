@@ -52,4 +52,4 @@ class Creator:
 # сохранить в файл, если задано его имя
 if __name__ == '__main__':
     creator = Creator()
-    creator.run()
+    program = creator.run()

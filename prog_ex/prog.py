@@ -17,6 +17,14 @@ class Program:
     def add_event(self, event, parent_id):
         pass
 
+    def get_event(self, event_id):
+        return self.events[event_id]
+
+    def get_parent_point(self, event_id):
+        parent_id = self.child_to_parent[event_id]
+        parent_event = self.events[parent_id]
+        return parent_event.point
+
     def predict(self, exemplar):
         pass
 
