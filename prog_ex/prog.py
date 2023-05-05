@@ -11,6 +11,8 @@ class Program:
         self.order = [] # [id_1, ..., id_n]
         self.child_to_parent = {}  # {child_id: parent_id}
 
+    def is_empty(self):
+        return len(self.order) == 0
 
     def add_event(self, event, parent_id):
         pass

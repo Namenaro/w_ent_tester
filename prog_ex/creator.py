@@ -1,6 +1,7 @@
-from prog import Program
+from prog import Program, Event
+from drawer import draw_program_to_ax
 from picture_wrapper import Pic
-from common_utils import HtmlLogger, Point
+from common_utils import Point
 
 
 import matplotlib.pyplot as plt
@@ -24,23 +25,27 @@ class Creator:
         # получаем данные клика
         x = math.ceil(event.xdata)
         y = math.ceil(event.ydata)
-        point = Point(x=x, y=y)
-        radius = int(input("Радиус облака: "))
-        self.ax.clear()
-        draw(point, radius, self.ax, self.pic)
 
+        # заполняем эталон события
+        point = Point(x=x, y=y)
+        cloud_radius = int(input("Радиус облака: "))
+        err_radius = int(input("Радиус адаптации:"))
+        if not self.program.is_empty():
+            parent_id = int(input("Номер родителя: "))
+        vet = self.pic.get_mean_val_around_point(point, cloud_radius)
+        event = Event(point=point, cloud_rad=cloud_radius, err_rad=err_radius, vet=vet)
+        self.program.add_event(event=event, parent_id=parent_id)
+
+        # перерисовываем картинку
+        self.ax.clear()
+        draw_program_to_ax(self.ax, self.pic, self.program)
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-
 
     def run(self):
         plt.imshow(self.pic.img, cmap='gray')
         plt.show()
         return self.program
-
-def draw(point, radius, ax, pic):
-    pic.draw_to_ax(ax)
-    pic.draw_rectangle(ax=ax, point=point, radius=radius)
 
 
 # накликать программу вручную
