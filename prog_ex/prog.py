@@ -50,6 +50,8 @@ class Program:
         u = end_point - start_point
         return u
 
+    def is_event_first(self, event_id):
+
 
 class Exemplar:
     def __init__(self):
@@ -69,6 +71,11 @@ class Exemplar:
         point = self.get_point_of_event(event_id)
         point_cloud = Pic.get_point_cloud(point, cloud_rad)
         return point_cloud
+
+    def get_point_of_parent(self, event_id, program):
+        parent_id = program.get_parent_id(event_id)
+        point_of_parent = self.events_to_points[parent_id]
+        return point_of_parent
 
 
 class ProgramWDistrs:
