@@ -28,6 +28,9 @@ class Program:
     def get_event(self, event_id):
         return self.events[event_id]
 
+    def get_event_id_by_i_in_order(self, i):
+        return self.order[i]
+
     def get_parent_point(self, event_id):
         parent_id = self.child_to_parent[event_id]
         parent_event = self.events[parent_id]
@@ -39,6 +42,9 @@ class Program:
 class Exemplar:
     def __init__(self):
         self.events_to_points = {}  # {id: point}
+
+    def add(self, point, event_id):
+        self.events_to_points[event_id] = point
 
 
 
