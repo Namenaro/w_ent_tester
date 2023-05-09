@@ -2,12 +2,14 @@ from common_utils import Point, IdsGenerator
 from w_eval import WEval1px
 from picture_wrapper import Pic
 
+
 class Event:
     def __init__(self, point, cloud_rad, vet, err_rad):
         self.point = point
         self.cloud_rad = cloud_rad
         self.err_rad = err_rad
         self.vet = vet
+
 
 class Program:
     def __init__(self):
@@ -51,7 +53,7 @@ class Program:
         return u
 
     def is_event_first(self, event_id):
-
+        return event_id == self.order[0]
 
 class Exemplar:
     def __init__(self):
