@@ -36,8 +36,18 @@ class Program:
         parent_event = self.events[parent_id]
         return parent_event.point
 
-    def predict(self, exemplar):
-        pass
+    def get_point_of_event(self, event_id):
+        return self.events[event_id].point
+
+    def get_parent_id(self, event_id):
+        return self.child_to_parent[event_id]
+
+    def get_u(self, start_id, end_id):
+        start_point = self.get_point_of_event(start_id)
+        end_point = self.get_point_of_event(end_id)
+        u = end_point - start_point
+        return u
+
 
 class Exemplar:
     def __init__(self):
@@ -46,6 +56,13 @@ class Exemplar:
     def add(self, point, event_id):
         self.events_to_points[event_id] = point
 
+    def __len__(self):
+        return len(self.events_to_points)
 
+    def get_point_of_event(self, event_id):
+        return self.events_to_points[event_id]
+
+    def get_points_cloud_for_id(self, event_id, program):
+        return point_cloud
 
 
