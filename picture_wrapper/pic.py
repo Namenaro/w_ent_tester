@@ -62,6 +62,7 @@ class Pic:
         rgba = cmap(norm(self.img))
         ax.imshow(rgba, interpolation='none')
 
+    @staticmethod
     def get_point_cloud(self, center_point, radius):
         points = []
 

@@ -1,5 +1,5 @@
 from prog import Program, Event
-from drawer import draw_program_to_ax
+from drawer_program import draw_program_to_ax
 from picture_wrapper import Pic
 from common_utils import Point
 

@@ -1,4 +1,6 @@
 from common_utils import Point, IdsGenerator
+from w_eval import WEval1px
+from picture_wrapper import Pic
 
 class Event:
     def __init__(self, point, cloud_rad, vet, err_rad):
@@ -63,6 +65,24 @@ class Exemplar:
         return self.events_to_points[event_id]
 
     def get_points_cloud_for_id(self, event_id, program):
+        cloud_rad = program.get_event(event_id).cloud_rad
+        point = self.get_point_of_event(event_id)
+        point_cloud = Pic.get_point_cloud(point, cloud_rad)
         return point_cloud
 
 
+class ProgramWDistrs:
+    def __init__(self, pic, program):
+        self.pic = pic
+        self.program = program
+        self.ids_to_distrs = {} # event_id: w_distr
+        self.evaluator = WEval1px(self.pic)
+
+    def fill(self):
+        for event_id, event in self.program.events.items():
+            vet = event.vet
+            w_distr = self.evaluator.get_w_distr(vet=vet)
+            self.ids_to_distrs[event_id] = w_distr
+
+    def get_w_distr_for_event(self, event_id):
+        return self.ids_to_distrs[event_id]
