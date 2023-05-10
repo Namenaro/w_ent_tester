@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def run_test():
-    logger = HtmlLogger("reco_test")
+    logger = HtmlLogger("reco_test_form_center")
     pic = Pic()
     #create_and_save_program(pic)
     program = load_program_from_file()

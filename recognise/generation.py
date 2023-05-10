@@ -10,14 +10,15 @@ RealisationEntry = namedtuple('RealisationEntry', ('realisation', 'non_trivialit
 
 
 class Generation:
-    def __init__(self, pic, program):
+    def __init__(self, pic, program, wdistrs):
         self.entries = []
 
         self.pic = pic
         self.program = program
+        self.wdistrs = wdistrs
 
     def insert_new_exemplar(self, exemplar):
-        w = eval_exemplar(exemplar=exemplar, program=self.program, pic=self.pic)
+        w = eval_exemplar(exemplar=exemplar, program=self.program, pic=self.pic, wdistrs=self.wdistrs)
         entry = RealisationEntry(exemplar, w)
         insort(self.entries, entry, key=lambda x: -x.non_triviality)  # в порядке убывания
 

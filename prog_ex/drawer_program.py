@@ -1,6 +1,6 @@
 from picture_wrapper import Pic
 from common_utils import Point
-from prog import Program, Event
+from .prog import Program, Event
 
 
 def draw_program_to_ax(ax, pic, program):

@@ -1,5 +1,5 @@
-from w_eval_cloud import WEvalCloud
-from w_eval_1px import WEval1px
+
+from .w_eval_1px import WEval1px
 from common_utils import Point
 from picture_wrapper import Pic
 from prog_ex import Program, Event, Exemplar
@@ -42,23 +42,26 @@ class PointData:
                 self.went_s.append(went)
 
     def eval(self):
+        if len(self.went_s) == 0:
+            return 0
         w = max(self.went_s)
         return w
 
     def get_went_for_point_by_event(self, event_id, w_real, real_point, predicted_point):
         w_distr = self.program_w_distrs.get_w_distr_for_event(event_id)
-        err_radius =
+        err_radius = real_point.dist_to(predicted_point)
         went = self.evaluator_1px.get_went_by_w(w_real=w_real,
                                                 w_distr=w_distr,
                                                 err_radius=err_radius)
+        return went
 
-def eval_exemplar(exemplar, program, pic):
+def eval_exemplar(exemplar, program, pic, wdistrs):
     w = 0
     X, Y = pic.get_max_XY()
     for x in range(X):
         for y in range(Y):
             point = Point(x, y)
-            point_data = PointData(point, exemplar=exemplar, program=program, pic=pic)
+            point_data = PointData(point, exemplar=exemplar, program=program, pic=pic, program_w_distrs=wdistrs)
             point_data.fill()
             w += point_data.eval()
 

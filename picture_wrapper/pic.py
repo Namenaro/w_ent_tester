@@ -1,6 +1,7 @@
 from common_utils import Point, Distr
-from .clicked_data import ClickedData
-from .clicker import CoordSelector
+from clicked_data import ClickedData
+from clicker import CoordSelector
+from grid_creator import get_grid_points
 
 import numpy as np
 import random
@@ -63,7 +64,7 @@ class Pic:
         ax.imshow(rgba, interpolation='none')
 
     @staticmethod
-    def get_point_cloud(self, center_point, radius):
+    def get_point_cloud(center_point, radius):
         points = []
 
         rect_x = int(center_point.x - radius / 2)
@@ -154,7 +155,15 @@ class Pic:
             str_for_point='$'+str_for_point + '$'
         ax.scatter(point.x, point.y, c=[color], marker=str_for_point, alpha=0.6, s=200)
 
+    def get_grid(self, window_side):
+        X, Y = self.get_max_XY()
+        grid_points = get_grid_points(window_side, pic_side_X=X, pic_side_Y=Y)
+        return grid_points
 
+    def draw_grid(self, window_side, ax):
+        grid_points = self.get_grid(window_side)
+        for point in grid_points:
+            self.draw_point(ax, point)
 
 if __name__ == '__main__':
     pic = Pic()
@@ -168,6 +177,8 @@ if __name__ == '__main__':
     pic.draw_point(ax, next_point)
     pic.connect_two_points_by_arrow(ax, center_point, next_point)
     pic.annotate_point(ax, next_point, 'bla bla')
+
+    pic.draw_grid(ax=ax, window_side=5)
 
     plt.show()
     plt.close(fig)

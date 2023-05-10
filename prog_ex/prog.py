@@ -1,5 +1,4 @@
 from common_utils import Point, IdsGenerator
-from w_eval import WEval1px
 from picture_wrapper import Pic
 
 
@@ -55,6 +54,14 @@ class Program:
     def is_event_first(self, event_id):
         return event_id == self.order[0]
 
+    def __len__(self):
+        return len(self.order)
+
+    def reset_first_event(self, new_point, new_errad):
+        first_id = self.get_event_id_by_i_in_order(i=0)
+        self.events[first_id].point = new_point
+        self.events[first_id].err_rad = new_errad
+
 class Exemplar:
     def __init__(self):
         self.events_to_points = {}  # {id: point}
@@ -80,18 +87,4 @@ class Exemplar:
         return point_of_parent
 
 
-class ProgramWDistrs:
-    def __init__(self, pic, program):
-        self.pic = pic
-        self.program = program
-        self.ids_to_distrs = {} # event_id: w_distr
-        self.evaluator = WEval1px(self.pic)
 
-    def fill(self):
-        for event_id, event in self.program.events.items():
-            vet = event.vet
-            w_distr = self.evaluator.get_w_distr(vet=vet)
-            self.ids_to_distrs[event_id] = w_distr
-
-    def get_w_distr_for_event(self, event_id):
-        return self.ids_to_distrs[event_id]

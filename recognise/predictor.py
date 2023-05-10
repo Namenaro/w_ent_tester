@@ -1,11 +1,11 @@
-from prog_ex import Program, Exemplar, Event
+from prog_ex import Program
 
 
 def predict_next_event(exemplar, program):
     if exemplar is None:
         return predict_first_event(program)
 
-    i_of_next_event = len(exemplar) + 1
+    i_of_next_event = len(exemplar)
     event_id = program.get_event_id_by_i_in_order(i_of_next_event)
 
     parent_id = program.get_parent_id(event_id)

@@ -1,1 +1,1 @@
-from recogniser import Recogniser
+from .recogniser import Recogniser
