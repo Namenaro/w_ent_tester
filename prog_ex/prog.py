@@ -17,6 +17,7 @@ class Program:
         self.child_to_parent = {}  # {child_id: parent_id}
 
         self.ids_gen = IdsGenerator()
+        self.phantome_first_point = None
 
     def is_empty(self):
         return len(self.order) == 0
@@ -57,10 +58,11 @@ class Program:
     def __len__(self):
         return len(self.order)
 
-    def reset_first_event(self, new_point, new_errad):
-        first_id = self.get_event_id_by_i_in_order(i=0)
-        self.events[first_id].point = new_point
-        self.events[first_id].err_rad = new_errad
+    def set_phantome_first_event(self, phantome_point):
+        self.phantome_first_point = phantome_point
+
+    def get_phantome_point(self):
+        return self.phantome_first_point
 
 class Exemplar:
     def __init__(self):

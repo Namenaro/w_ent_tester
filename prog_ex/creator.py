@@ -1,5 +1,5 @@
-from .prog import Program, Event
-from .drawer_program import draw_program_to_ax
+from prog_ex.prog import Program, Event
+from prog_ex.drawer_program import draw_program_to_ax
 from picture_wrapper import Pic
 from common_utils import Point
 
@@ -68,6 +68,7 @@ class Creator:
 # сохранить в файл, если задано его имя
 if __name__ == '__main__':
     pic = Pic()
+    filename = "ident_pro"
     create_and_save_program(pic)
 
     print("Отрисуем сохраненнную ранее программу:")

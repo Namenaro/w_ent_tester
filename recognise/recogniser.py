@@ -15,10 +15,13 @@ class Recogniser:
             self.wdistrs = ProgramWDistrs(program=self.program, pic=self.pic)
         self.wdistrs.fill()
 
-    def recognise(self, surviving_max):
+    def recognise(self, surviving_max, len_of_subprog=None):
         self._init_first_generation()
 
-        for i in range(1, len(self.program)):
+        if len_of_subprog is None:
+            len_of_subprog = len(self.program)
+
+        for i in range(1, len_of_subprog):
             self._create_next_generaion(surviving_max)
 
         best_exemplars = self.generations_list[-1].get_all_exemplars_sorted()
@@ -56,9 +59,9 @@ class Recogniser:
         event_id, event, point = predict_next_event(exemplar=exemplar, program=self.program)
         start_points_cloud = self.pic.get_point_cloud(center_point=point, radius=event.err_rad)
         for start_point in start_points_cloud:
-            exemplar = copy.deepcopy(exemplar)
-            exemplar.add(point=start_point, event_id=event_id)
-            children_exemplars.append(exemplar)
+            child_exemplar = copy.deepcopy(exemplar)
+            child_exemplar.add(point=start_point, event_id=event_id)
+            children_exemplars.append(child_exemplar)
         return children_exemplars
 
 

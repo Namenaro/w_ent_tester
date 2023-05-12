@@ -16,6 +16,7 @@ def draw_program_to_ax(ax, pic, program):
 def _draw_event(event_id, pic, ax, program):
     event = program.get_event(event_id)
     pic.draw_rectangle(ax=ax, radius=event.cloud_rad, point=event.point)
+    pic.draw_rectangle(ax=ax, radius=event.err_rad, point=event.point, color='green')
     pic.draw_point(ax=ax, point=event.point, str_for_point=str(event_id))
 
 

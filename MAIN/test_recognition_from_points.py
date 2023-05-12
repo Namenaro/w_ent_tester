@@ -29,9 +29,9 @@ def run_test():
         for y in range(3, 17):
             point = Point(x, y)
             print(point)
-            program.reset_first_event(new_point=point, new_errad=1)
+            program.set_phantome_first_event(phantome_point=point)
             recogniser = Recogniser(program=program, pic=pic, wdistrs=wdistrs)
-            sorted_exemplars = recogniser.recognise(surviving_max=1)
+            sorted_exemplars = recogniser.recognise(surviving_max=4)
             best_ws = recogniser.get_best_ws()
             point_w = best_ws[0]
             new_pic.set_point_val(point, point_w)

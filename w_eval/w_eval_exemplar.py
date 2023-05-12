@@ -1,4 +1,4 @@
-
+from recognise import get_predicted_point_for_event
 from .w_eval_1px import WEval1px
 from common_utils import Point
 from picture_wrapper import Pic
@@ -32,12 +32,11 @@ class PointData:
             if self.point in point_cloud_of_event:
                 self.event_ids.append(event_id)
 
-
                 vet = self.program.get_event(event_id).vet
                 w = self.evaluator_1px.get_w(vet=vet, vreal=val_in_point)
                 self.w_s.append(w)
 
-                predicted_point = self.program.get_point_of_event(event_id)
+                predicted_point = get_predicted_point_for_event(event_id, self.exemplar, self.program)
                 went = self.get_went_for_point_by_event(event_id, w, real_point=point, predicted_point=predicted_point)
                 self.went_s.append(went)
 
@@ -54,6 +53,7 @@ class PointData:
                                                 w_distr=w_distr,
                                                 err_radius=err_radius)
         return went
+
 
 def eval_exemplar(exemplar, program, pic, wdistrs):
     w = 0

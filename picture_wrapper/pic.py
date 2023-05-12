@@ -1,7 +1,7 @@
 from common_utils import Point, Distr
-from clicked_data import ClickedData
-from clicker import CoordSelector
-from grid_creator import get_grid_points
+from .clicked_data import ClickedData
+from .clicker import CoordSelector
+from .grid_creator import get_grid_points
 
 import numpy as np
 import random
@@ -15,16 +15,23 @@ from math import ceil
 
 
 class Pic:
-    def __init__(self, numpy_pic=None):
+    def __init__(self, numpy_pic=None, class_of_pisc=3, need_etalon=True):
         if numpy_pic is None:
             dir_path = os.path.dirname(os.path.abspath(__file__))
             path = os.path.join(dir_path, '../MNIST')
             self.dataset = datasets.MNIST(root=path, train=True, download=True, transform=None)
-            class_of_pisc = 3
+
+            pics = []
             for element in self.dataset:
                 if element[1] == class_of_pisc:
-                    self.img = np.array(element[0])
-                    break
+                    img = np.array(element[0])
+                    pics.append(img)
+                    if len(pics)==2:
+                        break
+            if need_etalon:
+                self.img=pics[0]
+            else:
+                self.img=pics[1]
         else:
             self.img = numpy_pic
 
@@ -164,6 +171,16 @@ class Pic:
         grid_points = self.get_grid(window_side)
         for point in grid_points:
             self.draw_point(ax, point)
+
+    def get_all_points(self):
+        X, Y = self.get_max_XY()
+        points = []
+        for x in range(X):
+            for y in range(Y):
+                point = Point(x, y=y)
+                points.append(point)
+        return points
+
 
 if __name__ == '__main__':
     pic = Pic()
