@@ -20,6 +20,8 @@ class Recogniser:
 
         if len_of_subprog is None:
             len_of_subprog = len(self.program)
+        if len_of_subprog ==0:
+            return self.generations_list[-1].get_all_exemplars_sorted()
 
         for i in range(1, len_of_subprog):
             self._create_next_generaion(surviving_max)
