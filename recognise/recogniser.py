@@ -13,7 +13,7 @@ class Recogniser:
         self.wdistrs = wdistrs
         if self.wdistrs is None:
             self.wdistrs = ProgramWDistrs(program=self.program, pic=self.pic)
-        self.wdistrs.fill()
+            self.wdistrs.fill()
 
     def recognise(self, surviving_max, len_of_subprog=None):
         self._init_first_generation()

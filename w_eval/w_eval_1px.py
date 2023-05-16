@@ -12,7 +12,8 @@ class WEval1px:
         w_sample = []
         v_sample = self.pic.distr.get_sample(sample_size=None)
         for vreal in v_sample:
-            w_sample.append(self.get_w(vreal=vreal, vet=vet))
+            w=self.get_w(vreal=vreal, vet=vet)
+            w_sample.append(w)
         return Distr(max=1, min=0, sample=w_sample)
 
     def get_vicinity_size(self, rad):

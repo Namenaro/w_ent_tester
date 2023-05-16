@@ -43,14 +43,14 @@ class Distr:
     def draw(self):
         if not self.uniform:
             fig, ax = plt.subplots()
-            plt.hist(self.sample, density=True, edgecolor="black")
-            plt.show()
+            ax.hist(self.sample, density=True, edgecolor="black")
+
         else:
 
             fig, ax = plt.subplots()
             tmp_sample = np.random.uniform(self.min, self.max, 200)
-            plt.hist(tmp_sample, density=True, edgecolor="black")
-            plt.show()
+            ax.hist(tmp_sample, density=True, edgecolor="black")
+
 
         return fig
 

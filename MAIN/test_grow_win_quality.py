@@ -9,9 +9,7 @@ import numpy as np
 
 
 
-def run_test(program, pic, grid_window_side, logger, surviving_max):
-    wdistrs = ProgramWDistrs(program=program, pic=pic)
-
+def run_test(program, pic, grid_window_side, logger, surviving_max, wdistrs):
     points = pic.get_grid(grid_window_side)
     points.append(program.get_point_of_event(program.get_event_id_by_i_in_order(0)))
 
@@ -37,6 +35,7 @@ def run_test(program, pic, grid_window_side, logger, surviving_max):
         draw_exemplar_to_ax(ax, exemplar=exemplar, program=program, pic=pic)
         logger.add_fig(fig)
 
+    logger.add_text("Гистограмма значений w в экземплярах:")
     fig, ax = plt.subplots()
     ax.hist(all_best_ws)
     logger.add_fig(fig)
@@ -62,7 +61,7 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
         point_w = best_ws[0]
         all_best_ws += best_ws[:top_N]
         new_pic.set_point_val(point, point_w)
-        new_pic.draw_point(ax,point=point, str_for_point=str( float("{:.2f}".format(point_w))))
+        new_pic.draw_point(ax,point=point, str_for_point=str(float("{:.2f}".format(point_w))))
         print(str(point) + ", w=" + str(point_w))
 
     cax = ax.imshow(new_pic.img)
@@ -73,17 +72,26 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
 
 if __name__ == '__main__':
     pic = Pic(need_etalon=True, class_of_pisc=3)
-    #create_and_save_program(pic)
+    create_and_save_program(pic)
     program = load_program_from_file()
+    logger = HtmlLogger("test_win_gr")
+    wdistrs = ProgramWDistrs(program=program, pic=pic)
+    wdistrs.fill()
+    wdistr = wdistrs.get_w_distr_for_event(event_id="0")
+    fig, ax = plt.subplots()
+    ax.hist(wdistr.sample, density=True, edgecolor="black")
+    logger.add_fig(fig)
+    plt.clf()
+
 
     surviving_max = 7
     grid_window_side = 3
-    logger = HtmlLogger("test_win_gr")
+
     logger.add_text("Запуск на эталоне")
     pic = Pic()
-    run_test(program=program, pic=pic, grid_window_side=grid_window_side, logger=logger, surviving_max=surviving_max)
+    run_test(program=program, pic=pic, grid_window_side=grid_window_side, logger=logger, surviving_max=surviving_max, wdistrs=wdistrs)
 
     logger.add_line_big()
     logger.add_text("Запуск той же программы, но на неэталонной картинке")
     pic = Pic(need_etalon=False, class_of_pisc=3)
-    run_test(program=program, pic=pic, grid_window_side=grid_window_side, logger=logger, surviving_max=surviving_max)
+    run_test(program=program, pic=pic, grid_window_side=grid_window_side, logger=logger, surviving_max=surviving_max, wdistrs=wdistrs)
