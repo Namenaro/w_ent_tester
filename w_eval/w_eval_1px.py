@@ -22,6 +22,8 @@ class WEval1px:
     def get_went_by_w(self, w_distr, w_real, err_radius):
         nvals = self.get_vicinity_size(err_radius)
         max_w = w_distr.get_max()
+        if err_radius == 0:
+            nvals = 1
         p = w_distr.get_p_of_at_least_one_of_n_in_range(val1=w_real, val2=max_w, n=nvals)
         return 1 - p
 

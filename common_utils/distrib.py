@@ -74,7 +74,9 @@ class Distr:
     def get_p_of_at_least_one_of_n_in_range(self, val1, val2, n):
         # вероятность, что хотя бы 1 значение из n штук случайно взятых, попадет в диапазон
         p_element_not_in_range = 1 - self.get_p_of_event(val1, val2)
-        return 1 - (p_element_not_in_range ** n)
+
+        res = 1 - (p_element_not_in_range ** n)
+        return res
 
     def get_max(self):
         return self.max

@@ -68,5 +68,5 @@ if __name__ == '__main__':
     pic = Pic()
     test_went_around_T__cloud(pic)
     radius = 3
-
-    #test_went_around_T__cloud_(pic, radius=radius, T=Point(x=14, y=14), max_went=radius**2)
+    logger = HtmlLogger("test_cloud_went")
+    test_went_around_T__cloud_(pic, radius=radius, T=Point(x=14, y=14), max_went=radius**2, logger=logger)

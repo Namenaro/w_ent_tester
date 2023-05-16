@@ -56,28 +56,20 @@ class PointData:
 
 
 def eval_exemplar(exemplar, program, pic, wdistrs):
-
-
     w = 0
+
     X, Y = pic.get_max_XY()
+
     for x in range(X):
         for y in range(Y):
-
             point = Point(x, y)
-            if exemplar.events_to_points['0'].x == 3:
-                if exemplar.events_to_points['0'].y == 3:
-                    if point.x==2:
-                        if point.y==2:
-                            print("hhjfg")
 
-            if x == 0 and y == 27:
-                print("hgjh")
-            print(point)
             point_data = PointData(point, exemplar=exemplar, program=program, pic=pic, program_w_distrs=wdistrs)
             point_data.fill()
             w_in_point = point_data.eval()
 
             w+= w_in_point
+
 
     return w
 
