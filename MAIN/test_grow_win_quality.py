@@ -11,7 +11,7 @@ import numpy as np
 
 def run_test(program, pic, grid_window_side, logger, surviving_max, wdistrs):
     points = pic.get_grid(grid_window_side)
-    points.append(program.get_point_of_event(program.get_event_id_by_i_in_order(0)))
+    #points.append(program.get_point_of_event(program.get_event_id_by_i_in_order(0)))
 
     fig, ax = plt.subplots()
     draw_program_to_ax(ax, program=program, pic=pic)
