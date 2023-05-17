@@ -206,7 +206,7 @@ class TrajectoryGenerator:
 
 
 def main():
-    image = np.array(Image.open('C:/Users/enjul/Pictures/input/four_1.jpg').convert('L'))
+    image = np.zeros((50, 50))
 
     window_size = 5
     inner_rad = 3
