@@ -1,6 +1,6 @@
 from recognise import Recogniser
 from prog_ex import load_program_from_file, create_and_save_program, draw_program_to_ax, draw_exemplar_to_ax, draw_exemplars
-from common_utils import HtmlLogger, Point
+from common_utils import HtmlLogger, Point, measure_win_quality
 from picture_wrapper import Pic
 from w_eval import ProgramWDistrs
 
@@ -64,15 +64,40 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
         new_pic.draw_point(ax,point=point, str_for_point=str(float("{:.2f}".format(point_w))))
         print(str(point) + ", w=" + str(point_w))
 
+    measure_win1(new_pic, logger)
+
     cax = ax.imshow(new_pic.img)
     fig.colorbar(cax)
     logger.add_fig(fig)
     return all_best_exemplars, all_best_ws
 
 
+
+def measure_win1(pic, logger):
+    ws = list(pic.img.flatten())
+    #win = measure_win_quality(ws)
+
+    nws = [float(i) / (max(ws) - min(ws)) for i in ws]
+    sumdist = 0
+    for w in nws:
+        dist = (1 - w)
+        sumdist += dist
+
+    mean_dist = sumdist/len(nws)
+    std = np.std(nws)
+
+    fig, ax = plt.subplots()
+    counts, bins = np.histogram(ws, density=True)
+    per = 1 - np.percentile(counts, 90)
+    ax.hist(bins[:-1], bins, weights=counts)
+
+    logger.add_text("качество идентификации = " + str(per))
+    logger.add_fig(fig)
+
+
 if __name__ == '__main__':
     pic = Pic(need_etalon=True, class_of_pisc=3)
-    create_and_save_program(pic)
+    #create_and_save_program(pic)
     program = load_program_from_file()
     logger = HtmlLogger("test_win_gr")
     wdistrs = ProgramWDistrs(program=program, pic=pic)
@@ -84,7 +109,7 @@ if __name__ == '__main__':
     plt.clf()
 
 
-    surviving_max = 7
+    surviving_max = 3
     grid_window_side = 3
 
     logger.add_text("Запуск на эталоне")

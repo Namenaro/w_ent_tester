@@ -43,7 +43,7 @@ class PointData:
     def eval(self):
         if len(self.went_s) == 0:
             return 0
-        w = max(self.went_s)
+        w = max(self.w_s)
         return float(w)
 
     def get_went_for_point_by_event(self, event_id, w_real, real_point, predicted_point):
