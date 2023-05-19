@@ -83,9 +83,6 @@ def measure_win1(pic, logger):
         dist = (1 - w)
         sumdist += dist
 
-    mean_dist = sumdist/len(nws)
-    std = np.std(nws)
-
     fig, ax = plt.subplots()
     counts, bins = np.histogram(ws, density=True)
     per = 1 - np.percentile(counts, 90)
@@ -97,7 +94,7 @@ def measure_win1(pic, logger):
 
 if __name__ == '__main__':
     pic = Pic(need_etalon=True, class_of_pisc=3)
-    #create_and_save_program(pic)
+    create_and_save_program(pic)
     program = load_program_from_file()
     logger = HtmlLogger("test_win_gr")
     wdistrs = ProgramWDistrs(program=program, pic=pic)
