@@ -6,6 +6,7 @@ from w_eval import ProgramWDistrs
 
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 
 
@@ -48,6 +49,8 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
     logger.add_text("Длина подпрограммы = "+str(len_subprog+1))
     all_best_exemplars = []
     all_best_ws = []
+
+    ws_in_grid = []
     for point in points:
         program.set_phantome_first_event(phantome_point=point)
         recogniser = Recogniser(program=program, pic=pic, wdistrs=wdistrs)
@@ -59,12 +62,13 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
         #logger.add_fig(draw_exemplars(sorted_exemplars, pic, program))
 
         point_w = best_ws[0]
+        ws_in_grid.append(point_w)
         all_best_ws += best_ws[:top_N]
         new_pic.set_point_val(point, point_w)
         new_pic.draw_point(ax,point=point, str_for_point=str(float("{:.2f}".format(point_w))))
         print(str(point) + ", w=" + str(point_w))
 
-    measure_win1(new_pic, logger)
+    measure_win1(all_best_ws, logger)
 
     cax = ax.imshow(new_pic.img)
     fig.colorbar(cax)
@@ -73,28 +77,38 @@ def test_subprog(len_subprog, program, points, logger, wdistrs, pic, surviving_m
 
 
 
-def measure_win1(pic, logger):
-    ws = list(pic.img.flatten())
-    #win = measure_win_quality(ws)
-
-    nws = [float(i) / (max(ws) - min(ws)) for i in ws]
-    sumdist = 0
-    for w in nws:
-        dist = (1 - w)
-        sumdist += dist
+def measure_win1(ws, logger):
+    nws = norm_arr(ws)
+    per = 1 - get_empiric_percentile(sample=nws, percentile=90)
+    logger.add_text("качество идентификации = " + str(per))
 
     fig, ax = plt.subplots()
-    counts, bins = np.histogram(ws, density=True)
-    per = 1 - np.percentile(counts, 90)
-    ax.hist(bins[:-1], bins, weights=counts)
-
-    logger.add_text("качество идентификации = " + str(per))
+    ax.hist(nws)
+    logger.add_text("w лучших экземпляров по точкам решетки:")
     logger.add_fig(fig)
+
+def get_empiric_percentile(sample, percentile=90):
+    # ищем такое значение  в sample, что 90 процентов элементов будут левее него
+    sample_sorted = sorted(sample) # в порядке возрастания
+    num_of_elt = math.floor(len(sample_sorted) * percentile/100)
+    percentile = sample_sorted[num_of_elt]
+    return percentile
+
+
+
+def norm_arr(a):
+    amin, amax = min(a), max(a)
+    na = []
+    for val in a:
+        new_a = (val - amin) / (amax - amin)
+        na.append(new_a)
+
+    return na
 
 
 if __name__ == '__main__':
     pic = Pic(need_etalon=True, class_of_pisc=3)
-    create_and_save_program(pic)
+    #create_and_save_program(pic)
     program = load_program_from_file()
     logger = HtmlLogger("test_win_gr")
     wdistrs = ProgramWDistrs(program=program, pic=pic)
